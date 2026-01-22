@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { Phone, X } from "lucide-react";
-import MobileToggle from "@/components/MobileToggle";
+import MobileToggle from "@/Views/components/MobileToggle";
 import Image from "next/image";
+
 const NavbarComponent = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const handleNav = (linkName: string) => {
     const Gallery = document.getElementById("gallery");
     const services = document.getElementById("services");
@@ -69,7 +71,7 @@ const NavbarComponent = () => {
           </div>
 
           {/* Mobile Toggle */}
-          <MobileToggle />
+          <MobileToggle isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         </div>
 
         {/* Mobile Menu */}

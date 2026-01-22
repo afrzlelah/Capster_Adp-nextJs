@@ -17,18 +17,20 @@ const Footer = () => (
             </span>
           </div>
           <p className="text-slate-500 font-medium leading-[1.8] mb-10 text-lg">
-            katakatakatakataatakataj
+            Hubungi kami melalui media sosial atau telepon untuk booking
           </p>
           <div className="flex gap-5">
             <a
-              href="#"
+              href="https://www.instagram.com/capster_adp"
+              target="_blank"
               className="w-14 h-14 bg-white shadow-sm text-slate-950 flex items-center justify-center rounded-2xl hover:bg-blue-600 hover:text-white hover:-translate-y-1 transition-all duration-300"
             >
               <Instagram size={26} />
             </a>
             <a
-              href="#"
-              className="w-14 h-14 bg-white shadow-sm text-slate-950 flex items-center justify-center rounded-2xl hover:bg-red-600 hover:text-white hover:-translate-y-1 transition-all duration-300"
+              href="https://wa.me/6285702260407"
+              target="_blank"
+              className="w-14 h-14 bg-white shadow-sm text-slate-950 flex items-center justify-center rounded-2xl hover:bg-rose-600 hover:text-white hover:-translate-y-1 transition-all duration-300"
             >
               <Phone size={26} />
             </a>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import NavbarComponent from "@/Fragments/Content/NavbarComponent";
+import NavbarComponent from "@/Views/Fragments/Content/NavbarComponent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Capster_Adp",
   description: "Barbershop Berkelas kualitas emas",
+  openGraph: {
+    images: "./icon.png",
+  },
 };
 
 export default function RootLayout({

@@ -3,19 +3,19 @@ import { ChevronRight } from "lucide-react";
 const Services = () => {
   const list = [
     {
-      title: "Potong 2",
-      desc: "deskripsi.",
+      title: "Haircut",
+      desc: "Buat dirimu lebih percaya diri.",
       price: "20K",
       color: "blue",
     },
     {
-      title: "Potong 2",
-      desc: "deskripsi.",
+      title: "Keramas",
+      desc: "Dengan layanan yang menyenangkan, siap membuat anda nyaman dan bersih.",
       price: "25K",
       color: "red",
     },
     {
-      title: "Model 3",
+      title: "Coloring",
       desc: "deskripsi.",
       price: "30K",
       color: "blue",
@@ -43,8 +43,8 @@ const Services = () => {
               See Our Services
             </h2>
             <h3 className="text-5xl md:text-7xl font-black text-slate-950 leading-[0.9] tracking-tight">
-              Potongan presisi, <br />
-              Sentuhan halus.
+              Sentuhah lembut <br />
+              Tapi tetap presisi.
             </h3>
           </div>
           <p className="text-slate-500 max-w-xs font-medium leading-relaxed">

@@ -1,5 +1,5 @@
 import "../globals.css";
-import NavbarComponent from "@/Fragments/Content/NavbarComponent";
+import NavbarComponent from "@/Views/Fragments/Content/NavbarComponent";
 
 export default function RootLayout({
   children,

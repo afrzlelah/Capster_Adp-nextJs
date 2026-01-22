@@ -1,7 +1,7 @@
-import Footer from "@/Fragments/Content/Footer";
-import Gallery from "@/Fragments/Content/Gallery";
-import Hero from "@/Fragments/Content/Hero";
-import Services from "@/Fragments/Content/Service";
+import Footer from "@/Views/Fragments/Content/Footer";
+import Gallery from "@/Views/Fragments/Content/Gallery";
+import Hero from "@/Views/Fragments/Content/Hero";
+import Services from "@/Views/Fragments/Content/Service";
 
 const HomePageView = () => {
   return (

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center bg-white dark:bg-black overflow-hidden">
+    <section className="relative min-h-screen flex items-center bg-white overflow-hidden">
       {/* Ultra-Sharp High Definition Background Element */}
       <div className="absolute top-0 right-0 w-[60%] h-full bg-slate-50 skew-x-[-15deg] origin-top translate-x-32 hidden lg:block border-l border-slate-100 shadow-2xl shadow-slate-200/50"></div>
       <div className="absolute top-1/4 -left-20 w-125 h-125 bg-blue-400/10 rounded-full blur-[120px] pointer-events-none"></div>
@@ -15,8 +15,8 @@ const Hero = () => {
             <Scissors size={14} className="animate-pulse" /> The Best Barbershop
             Lokal
           </div>
-          <h1 className="text-6xl md:text-[92px] font-black text-slate-200 mb-10 leading-[0.95] tracking-[-0.04em]">
-            Dapatkan Gay<span className="text-slate-950">a</span> <br />{" "}
+          <h1 className="text-6xl md:text-[92px] font-black text-slate-900 mb-10 leading-[0.95] tracking-[-0.04em]">
+            Dapatkan Gay<span className="text-slate-200">a</span> <br />{" "}
             <span className="text-rose-600 drop-shadow-[0_10px_20px_rgba(220,38,38,0.2)]">
               Terbaikmu.
             </span>

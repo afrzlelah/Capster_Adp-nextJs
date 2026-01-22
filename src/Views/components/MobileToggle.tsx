@@ -1,9 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
-const MobileToggle = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+const MobileToggle = ({ isMenuOpen, setIsMenuOpen }) => {
   return (
     <button
       className="md:hidden p-2 rounded-xl bg-slate-100/10 backdrop-blur-md"
