@@ -16,7 +16,7 @@ const Hero = () => {
             Lokal
           </div>
           <h1 className="text-6xl md:text-[92px] font-black text-slate-900 mb-10 leading-[0.95] tracking-[-0.04em]">
-            Dapatkan Gay<span className="text-slate-200">a</span> <br />{" "}
+            Dapatkan Gay<span className="text-slate-900">a</span> <br />{" "}
             <span className="text-rose-600 drop-shadow-[0_10px_20px_rgba(220,38,38,0.2)]">
               Terbaikmu.
             </span>
