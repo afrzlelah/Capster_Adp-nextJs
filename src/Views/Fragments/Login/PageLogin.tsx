@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import Swal from "sweetalert2";
@@ -173,12 +174,12 @@ const PageLogin = () => {
 
             <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
               Don't have an account?
-              <a
-                href="#"
+              <Link
+                href="/register"
                 className="font-medium text-lime-600 dark:text-lime-400 hover:text-lime-500 dark:hover:text-lime-300"
               >
                 Sign up
-              </a>
+              </Link>
             </p>
           </div>
         </div>
