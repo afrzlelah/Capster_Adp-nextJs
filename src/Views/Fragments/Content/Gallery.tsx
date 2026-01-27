@@ -15,7 +15,7 @@ const Gallery = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const potos = await fetch(`http://localhost:3000/api/gallery`);
+      const potos = await fetch(`/api/gallery`);
       const response = await potos.json();
       const result = response.data;
       setPhotos(result);

@@ -16,7 +16,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetching = async () => {
-      const datas = await fetch(`http://localhost:3000/api/gallery`);
+      const datas = await fetch(`/api/gallery`);
       const data = await datas.json();
       setGalleryItems(data.data);
     };
