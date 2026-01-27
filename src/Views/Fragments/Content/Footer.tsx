@@ -1,7 +1,9 @@
 import { Phone, Instagram, ExternalLink, AArrowUp } from "lucide-react";
 
 const Footer = async () => {
-  const fetchData = await fetch(`/api/services`);
+  const fetchData = await fetch(
+    `${process.env.NEXT_API_BASE_URL}/api/services`,
+  );
   const response = await fetchData.json();
   interface ResponseData {
     id: string;

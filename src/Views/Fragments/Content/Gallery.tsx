@@ -15,7 +15,7 @@ const Gallery = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const potos = await fetch(`/api/gallery`);
+      const potos = await fetch(`${process.env.NEXT_API_BASE_URL}/api/gallery`);
       const response = await potos.json();
       const result = response.data;
       setPhotos(result);
