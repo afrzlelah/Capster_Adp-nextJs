@@ -7,10 +7,10 @@ const HomePageView = () => {
   return (
     <>
       <main className="">
-        <Hero />
+        {/* <Hero />
         <Gallery />
         <Services />
-        <Footer />
+        <Footer /> */}
       </main>
     </>
   );
