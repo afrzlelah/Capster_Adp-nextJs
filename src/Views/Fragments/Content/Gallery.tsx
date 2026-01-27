@@ -1,7 +1,27 @@
+"use client";
+
 import { Instagram } from "lucide-react";
+import { useEffect, useState } from "react";
+
+interface DataGallery {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+}
 
 const Gallery = () => {
-  const photos = ["/porto1.png", "/porto2.png", "/porto3.png", "/porto4.png"];
+  const [photos, setPhotos] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const potos = await fetch(`http://localhost:3000/api/gallery`);
+      const response = await potos.json();
+      const result = response.data;
+      setPhotos(result);
+    };
+    fetchData();
+  }, []);
 
   return (
     <section id="gallery" className="py-40 bg-white">
@@ -17,13 +37,13 @@ const Gallery = () => {
         </div>
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-10 space-y-10">
-          {photos.map((url, i) => (
+          {photos.map((item: DataGallery, i) => (
             <div
               key={i}
               className="relative rounded-[2.5rem] overflow-hidden group shadow-xl hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] transition-all duration-700 hover:-translate-y-2"
             >
               <img
-                src={url}
+                src={item.image}
                 alt="HD Haircut Result"
                 className="w-full h-auto object-cover transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1 saturate-[1.1]"
               />
@@ -31,9 +51,11 @@ const Gallery = () => {
                 <div className="w-full flex justify-between items-center translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   <div className="text-white">
                     <p className="text-[10px] font-black tracking-widest uppercase opacity-70">
-                      Style Model
+                      {item.name}
                     </p>
-                    <p className="text-xl font-black tracking-tight">Ketcehh</p>
+                    <p className="text-xl font-black tracking-tight">
+                      {item.description}
+                    </p>
                   </div>
                   <a
                     href="https://www.instagram.com/capster_adp"

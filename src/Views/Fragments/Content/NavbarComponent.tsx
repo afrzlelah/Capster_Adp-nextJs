@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Phone, X } from "lucide-react";
 import MobileToggle from "@/Views/components/MobileToggle";
 import Image from "next/image";
+import Link from "next/link";
 
 const NavbarComponent = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,7 +57,7 @@ const NavbarComponent = () => {
               <p
                 key={link.name}
                 onClick={() => handleNav(link.name)}
-                className={`cursor-pointer font-bold text-sm uppercase tracking-widest hover:text-red-600 transition-all duration-300 text-slate-600`}
+                className={`cursor-pointer font-bold text-sm uppercase tracking-widest hover:scale-110 hover:text-red-600 transition-all duration-300 text-slate-600`}
               >
                 {link.name}
               </p>
@@ -64,11 +65,17 @@ const NavbarComponent = () => {
             <a
               href="https://wa.me/6285702260407"
               target="_blank"
-              className="bg-black text-white px-8 py-3 rounded-2xl font-black text-sm uppercase tracking-wider hover:bg-gray-700 shadow-[0_10px_25px_-5px_rgba(37,99,235,0.4)] hover:-translate-y-1 transition-all active:scale-95"
+              className="  text-slate-600 font-bold text-sm tracking-wider transition-all hover:scale-110 uppercase "
             >
               Booking
             </a>
           </div>
+          <Link
+            href={"/login"}
+            className="bg-black py-2 px-4 rounded-2xl text-white"
+          >
+            Login
+          </Link>
 
           {/* Mobile Toggle */}
           <MobileToggle isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
