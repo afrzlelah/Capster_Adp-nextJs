@@ -3,9 +3,16 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+type GalleryItems = {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+};
+
 export default function Page() {
   const [selectedId, setSelectedId] = useState(false);
-  const [galleryItems, setGalleryItems] = useState([]);
+  const [galleryItems, setGalleryItems] = useState<GalleryItems[]>([]);
 
   useEffect(() => {
     const fetching = async () => {

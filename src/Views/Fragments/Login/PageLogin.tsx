@@ -6,8 +6,8 @@ import Swal from "sweetalert2";
 
 const PageLogin = () => {
   const router = useRouter();
-  const usernameRef = useRef();
-  const passwordRef = useRef();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const handleNotFitur = () => {
     Swal.fire({
@@ -24,8 +24,8 @@ const PageLogin = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: usernameRef.current.value,
-        password: passwordRef.current.value,
+        username: usernameRef.current!.value,
+        password: passwordRef.current!.value,
       }),
     });
     const response = await res.json();

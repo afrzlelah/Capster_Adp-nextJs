@@ -3,6 +3,12 @@ import { Phone, Instagram, ExternalLink, AArrowUp } from "lucide-react";
 const Footer = async () => {
   const fetchData = await fetch(`http://localhost:3000/api/services`);
   const response = await fetchData.json();
+  interface ResponseData {
+    id: string;
+    name: string;
+    description: string;
+    price?: number;
+  }
   return (
     <footer
       id="contact"
@@ -45,7 +51,7 @@ const Footer = async () => {
               LAYANAN
             </h4>
             <ul className="space-y-5 text-slate-500 font-bold">
-              {response.map((item) => (
+              {response.map((item: ResponseData) => (
                 <li
                   key={item.id}
                   className="hover:text-blue-600 transition-colors cursor-pointer text-sm flex items-center gap-3 group"
