@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
   });
   if (error) {
     return NextResponse.json(
-      { message: "Gagal membuat account", status: 400 },
+      { message: "Gagal membuat account", status: 500 },
       { status: 500 },
     );
   }
