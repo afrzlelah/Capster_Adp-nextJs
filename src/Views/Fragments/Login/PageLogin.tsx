@@ -46,10 +46,15 @@ const PageLogin = () => {
       });
 
       const response = await res.json();
+      console.log(response);
 
       if (res.ok) {
+        if (response.data.role === "admin") {
+          router.push("/dashboard/admin-toko");
+        } else {
+          router.push("/register");
+        }
         showModal("Berhasil", "Login berhasil! Mengalihkan ke dashboard...");
-        router.push("/");
       } else {
         showModal(
           "Error",

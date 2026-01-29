@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactEventHandler, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   UserPlus,
   Mail,

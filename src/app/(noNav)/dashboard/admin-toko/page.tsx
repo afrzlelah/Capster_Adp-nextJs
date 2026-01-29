@@ -1,4 +1,4 @@
-import Dashboard from "@/Views/Fragments/dashboard/Dashboard";
+import Dashboard from "@/Views/Fragments/dashboard/admin-toko/Dashboard";
 
 const Page = () => {
   return (

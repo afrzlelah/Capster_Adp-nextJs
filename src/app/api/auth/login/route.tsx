@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/app/libs/supabase/server";
+import { supabaseServer } from "@/libs/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -22,5 +22,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Password Salah" }, { status: 401 });
   }
 
-  return NextResponse.json({ message: "Login Succes" }, { status: 200 });
+  return NextResponse.json({ message: "Login Succes", data }, { status: 200 });
 }
