@@ -4,14 +4,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 type GalleryItems = {
-  id: string;
+  id: number;
   name: string;
   image: string;
   description: string;
 };
 
 export default function Page() {
-  const [selectedId, setSelectedId] = useState(false);
+  const [selectedId, setSelectedId] = useState<boolean | null>(false);
   const [galleryItems, setGalleryItems] = useState<GalleryItems[]>([]);
 
   useEffect(() => {

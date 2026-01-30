@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center bg-white overflow-hidden">
+    <section className="relative min-h-screen flex items-center bg-bg-light overflow-hidden">
       {/* Ultra-Sharp High Definition Background Element */}
       <div className="absolute top-0 right-0 w-[60%] h-full bg-slate-50 skew-x-[-15deg] origin-top translate-x-32 hidden lg:block border-l border-slate-100 shadow-2xl shadow-slate-200/50"></div>
       <div className="absolute top-1/4 -left-20 w-125 h-125 bg-blue-400/10 rounded-full blur-[120px] pointer-events-none"></div>

@@ -51,8 +51,10 @@ const PageLogin = () => {
       if (res.ok) {
         if (response.data.role === "admin") {
           router.push("/dashboard/admin-toko");
+        } else if (response.data.role === "user") {
+          router.push("/dashboard/users/");
         } else {
-          router.push("/register");
+          router.push("/gallery");
         }
         showModal("Berhasil", "Login berhasil! Mengalihkan ke dashboard...");
       } else {

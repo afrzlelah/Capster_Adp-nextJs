@@ -1,5 +1,6 @@
 import { supabaseServer } from "@/libs/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -21,6 +22,14 @@ export async function POST(req: NextRequest) {
   if (data.password !== password) {
     return NextResponse.json({ message: "Password Salah" }, { status: 401 });
   }
+  (await cookies()).set("role", data.role, {
+    httpOnly: true,
+    path: "/",
+  });
+  (await cookies()).set("user_id", String(data.id), {
+    httpOnly: true,
+    path: "/",
+  });
 
   return NextResponse.json({ message: "Login Succes", data }, { status: 200 });
 }

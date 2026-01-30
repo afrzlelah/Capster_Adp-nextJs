@@ -1,6 +1,6 @@
-import { Info } from "lucide-react";
+import { Info, X } from "lucide-react";
 
-const Alert = ({ title, text }) => {
+const Alert = ({ title, text }: { title: string; text: string }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-6 transform animate-in zoom-in-95 duration-200">

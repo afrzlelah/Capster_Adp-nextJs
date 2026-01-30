@@ -1,26 +1,8 @@
 @import "tailwindcss";
 
-:root {
-  --primary-red: 358 90% 58%;
-  --primary-blue: 230 100% 36%;
-  --bg-light: 0 0% 100%;
-  --bg-dark: 222 47% 11%;
-}
-
-@layer utilities {
-  .text-primary-red {
-    color: hsl(var(--primary-red));
-  }
-
-  .text-primary-blue {
-    color: hsl(var(--primary-blue));
-  }
-
-  .bg-light {
-    background-color: hsl(var(--bg-light));
-  }
-
-  .bg-dark {
-    background-color: hsl(var(--bg-dark));
-  }
+@theme {
+  --color-bg-light: #fff;
+  --color-text-light: oklch(14.5% 0 0);
+  --color-bg-dark: oklch(14.5% 0 0);
+  --color-text-dark: oklch(92.2% 0 0);
 }

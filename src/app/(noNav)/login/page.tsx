@@ -1,4 +1,4 @@
-import PageLogin from "@/Views/Fragments/Login/PageLogin";
+import PageLogin from "@/Views/Fragments/Login/LoginPage";
 
 const Page = () => {
   return <PageLogin />;
