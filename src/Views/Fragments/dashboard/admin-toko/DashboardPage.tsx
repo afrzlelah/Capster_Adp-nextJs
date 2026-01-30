@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   Scissors,
@@ -17,10 +17,21 @@ import {
   Search,
   Icon,
 } from "lucide-react";
+import { UserDataSupabase } from "@/app/types/dataUserSupabase";
 
 const DashboardAdmin = () => {
   const [activeTab, setActiveTab] = useState("booking");
   const [searchQuery, setSearchQuery] = useState("");
+  const [userData, setUserData] = useState<UserDataSupabase | null>(null);
+
+  useEffect(() => {
+    const fetchingDataUser = async () => {
+      const userData = await fetch(`http://localhost:3000/api/data`);
+      const data = await userData.json();
+      setUserData(data[0]);
+    };
+    fetchingDataUser();
+  }, []);
 
   // --- Mock Data ---
   const [layanan, setLayanan] = useState([
@@ -152,7 +163,7 @@ const DashboardAdmin = () => {
         <header className="h-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0">
           <h1 className="text-xl font-bold capitalize">
             {activeTab === "booking"
-              ? "Manajemen Jadwal"
+              ? "Dashboard Admin"
               : activeTab === "layanan"
                 ? "Daftar Layanan"
                 : "Gallery Produk"}
@@ -172,7 +183,7 @@ const DashboardAdmin = () => {
               />
             </div>
             <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold text-indigo-600">
-              AD
+              {userData?.username.substr(0, 2)}
             </div>
           </div>
         </header>

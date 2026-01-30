@@ -31,7 +31,7 @@ const Services = async () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {list.map((item: any, idx: number) => (
+          {list?.map((item: any, idx: number) => (
             <a
               href="https://instagram.com/capster_adp"
               key={idx}

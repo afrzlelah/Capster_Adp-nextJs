@@ -1,5 +1,6 @@
 "use client";
 
+import { UserDataSupabase } from "@/app/types/dataUserSupabase";
 import {
   Calendar,
   Clock,
@@ -15,24 +16,18 @@ import {
   Gift,
   PlusCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import SidebarUser from "./components/Sidebar";
+import HeaderUser from "./components/HeaderUser";
 
 const DashboardUser = () => {
-  const [activeTab, setActiveTab] = useState("overview");
-
-  // --- Mock Data ---
-  const userData = {
-    name: "Rian Ardiansyah",
-    points: 1250,
-    membership: "Gold Member",
-    nextBooking: {
-      id: "BK-9921",
-      service: "Gentlemen's Cut",
-      date: "25 Maret 2024",
-      time: "14:00",
-      barber: "Ahmad",
-    },
-  };
+  const [userData, setUserData] = useState<UserDataSupabase | null>(null);
+  console.log(userData);
+  useEffect(() => {
+    fetch(`http://localhost:3000/api/data`)
+      .then((response) => response.json())
+      .then((result) => setUserData(result[0]));
+  }, []);
 
   const recentHistory = [
     {
@@ -69,74 +64,13 @@ const DashboardUser = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col md:flex-row font-sans text-slate-900 dark:text-slate-100">
       {/* Sidebar Pelanggan */}
-      <aside className="w-full md:w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
-        <div className="p-6">
-          <div className="flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <Scissors className="text-white w-6 h-6" />
-            </div>
-            <span className="font-bold text-xl tracking-tight">
-              Capster{" "}
-              <span className="text-indigo-600 font-black italic text-[24px]">
-                ADP
-              </span>
-            </span>
-          </div>
-
-          <nav className="space-y-1">
-            <button
-              onClick={() => setActiveTab("overview")}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === "overview" ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"}`}
-            >
-              <User size={20} /> Beranda
-            </button>
-            <button
-              onClick={() => setActiveTab("booking")}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === "booking" ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"}`}
-            >
-              <PlusCircle size={20} /> Buat Janji
-            </button>
-            <button
-              onClick={() => setActiveTab("history")}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === "history" ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"}`}
-            >
-              <History size={20} /> Riwayat
-            </button>
-          </nav>
-        </div>
-
-        <div className="mt-auto p-6 border-t border-slate-200 dark:border-slate-800 hidden md:block">
-          <button className="flex items-center gap-3 text-red-500 font-semibold hover:bg-red-50 dark:hover:bg-red-500/10 w-full px-4 py-3 rounded-xl transition-all">
-            <LogOut size={20} /> Keluar
-          </button>
-        </div>
-      </aside>
+      <SidebarUser />
 
       {/* Konten Utama */}
       <main className="flex-1 overflow-y-auto p-6 md:p-10">
         {/* Header User */}
         <header className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
-          <div>
-            <h1 className="text-3xl font-black text-slate-900 dark:text-white">
-              Halo, {userData.name.split(" ")[0]}! 👋
-            </h1>
-            <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">
-              Siap untuk tampil lebih keren hari ini?
-            </p>
-          </div>
-          <div className="flex items-center gap-3 bg-white dark:bg-slate-900 p-2 pr-4 rounded-full border border-slate-200 dark:border-slate-800 shadow-sm">
-            <div className="w-10 h-10 bg-amber-100 dark:bg-amber-500/20 rounded-full flex items-center justify-center">
-              <Star className="text-amber-500 fill-amber-500" size={20} />
-            </div>
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                Poin Anda
-              </p>
-              <p className="text-sm font-bold text-slate-900 dark:text-white">
-                {userData.points.toLocaleString()} Poin
-              </p>
-            </div>
-          </div>
+          <HeaderUser userData={userData} />
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -144,38 +78,50 @@ const DashboardUser = () => {
           <div className="lg:col-span-2 space-y-8">
             {/* Booking Card Aktif */}
             <section>
-              <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <Clock className="text-indigo-600" size={20} /> Booking Akan
-                Datang
-              </h2>
+              {userData?.nextBooking && (
+                <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+                  <Clock className="text-indigo-600" size={20} /> Booking Akan
+                  Datang
+                </h2>
+              )}
               <div className="bg-indigo-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl shadow-indigo-500/30">
                 <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                   <div>
                     <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 inline-block">
-                      Konfirmasi Berhasil
+                      {userData?.nextBooking
+                        ? "Konfirmasi Berhasil"
+                        : "Welcome"}
                     </span>
                     <h3 className="text-2xl font-black">
-                      {userData.nextBooking.service}
+                      {userData?.nextBooking?.services || "Booking sekarang!"}
                     </h3>
                     <div className="flex items-center gap-4 mt-4 opacity-90 text-sm font-medium">
                       <div className="flex items-center gap-1.5">
-                        <Calendar size={16} /> {userData.nextBooking.date}
+                        <Calendar size={16} />{" "}
+                        {userData?.nextBooking?.date ||
+                          "Anda belum melakukan Booking"}
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <Clock size={16} /> {userData.nextBooking.time} WIB
+                        <Clock size={16} /> {userData?.nextBooking?.jam || "-"}{" "}
+                        WIB
                       </div>
                     </div>
                     <div className="mt-6 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs uppercase">
-                        A
-                      </div>
-                      <span className="text-sm font-bold">
-                        Barber: {userData.nextBooking.barber}
-                      </span>
+                      {userData?.nextBooking && (
+                        <>
+                          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs uppercase">
+                            {userData?.nextBooking?.barber.substr(0, 2)}
+                          </div>
+                          <span className="text-sm font-bold">
+                            Barber: {userData?.nextBooking?.barber || ""}
+                          </span>
+                        </>
+                      )}
                     </div>
                   </div>
+
                   <button className="bg-white text-indigo-600 px-6 py-3 rounded-2xl font-black text-sm hover:bg-slate-100 transition-all active:scale-95">
-                    Lihat Tiket
+                    {userData?.nextBooking ? "Lihat Tiket" : "Booking Sekarang"}
                   </button>
                 </div>
                 {/* Dekorasi Background */}

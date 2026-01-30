@@ -1,6 +1,7 @@
 import { supabaseServer } from "@/libs/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { signValue } from "@/libs/signedCookie";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -22,13 +23,17 @@ export async function POST(req: NextRequest) {
   if (data.password !== password) {
     return NextResponse.json({ message: "Password Salah" }, { status: 401 });
   }
-  (await cookies()).set("role", data.role, {
+  (await cookies()).set("role", await signValue(data.role), {
     httpOnly: true,
     path: "/",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 3,
   });
-  (await cookies()).set("user_id", String(data.id), {
+  (await cookies()).set("userId", await signValue(data.id), {
     httpOnly: true,
     path: "/",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 3,
   });
 
   return NextResponse.json({ message: "Login Succes", data }, { status: 200 });
