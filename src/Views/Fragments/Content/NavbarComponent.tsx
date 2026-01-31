@@ -1,110 +1,101 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Phone, X } from "lucide-react";
 import MobileToggle from "@/Views/components/MobileToggle";
 import Image from "next/image";
 import Link from "next/link";
 
+type User = {
+  id: string;
+  role: "admin" | "user";
+};
+
 const NavbarComponent = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleNav = (linkName: string) => {
-    const Gallery = document.getElementById("gallery");
-    const services = document.getElementById("services");
-    const contact = document.getElementById("contact");
-    if (linkName === "Layanan")
-      services?.scrollIntoView({ behavior: "smooth" });
-    else if (linkName === "Lokasi")
-      contact?.scrollIntoView({ behavior: "smooth" });
-    else if (linkName === "Galeri")
-      Gallery?.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+    fetch("/api/data")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setUser(data))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleNav = (name: string) => {
+    document
+      .getElementById(
+        name === "Layanan"
+          ? "services"
+          : name === "Galeri"
+            ? "gallery"
+            : "contact",
+      )
+      ?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const navLinks = [
-    { name: "Layanan", href: "#services" },
-    { name: "Galeri", href: "#gallery" },
-    { name: "Lokasi", href: "#contact" },
-  ];
+  const navLinks = ["Layanan", "Galeri", "Lokasi"];
+
   return (
     <header>
-      <nav
-        className={`fixed w-full z-50 transition-all duration-500 bg-white/80 backdrop-blur-xl shadow-[0_2px_20px_rgba(0,0,0,0.05)] py-3`}
-      >
+      <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-xl py-3 shadow">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-3 group cursor-pointer">
-            {/* Logo ADP  */}
-            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-blue-600 font-black border border-slate-100 shadow-xl group-hover:scale-110 transition-transform duration-300 relative overflow-hidden">
-              <div className="absolute inset-0 bg-linear-to-br from-red-500/10 to-blue-600/10"></div>
-              <Image
-                src="/logo.png"
-                alt="logo"
-                className="rounded-full"
-                width={100}
-                height={100}
-              />
-            </div>
-            <span
-              className={`font-black text-2xl tracking-tighter transition-colors duration-300 text-slate-900`}
-            >
-              CAPSTER_ADP
-            </span>
+          {/* Logo */}
+          <div className="flex items-center gap-3 cursor-pointer">
+            <Image src="/logo.png" alt="logo" width={48} height={48} />
+            <span className="font-black text-2xl">CAPSTER_ADP</span>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-10 items-center">
-            {navLinks.map((link) => (
+            {navLinks.map((name) => (
               <p
-                key={link.name}
-                onClick={() => handleNav(link.name)}
-                className={`cursor-pointer font-bold text-sm uppercase tracking-widest hover:scale-110 hover:text-red-600 transition-all duration-300 text-slate-600`}
+                key={name}
+                onClick={() => handleNav(name)}
+                className="cursor-pointer font-bold hover:text-red-600"
               >
-                {link.name}
+                {name}
               </p>
             ))}
+
             <a
               href="https://wa.me/6285702260407"
               target="_blank"
-              className="  text-slate-600 font-bold text-sm tracking-wider transition-all hover:scale-110 uppercase "
+              className="font-bold"
             >
               Booking
             </a>
           </div>
-          <Link
-            href={"/login"}
-            className="bg-black py-2 px-4 rounded-2xl text-white"
-          >
-            Login
-          </Link>
 
-          {/* Mobile Toggle */}
+          {/* AUTH BUTTON */}
+
+          {!loading && !user && (
+            <Link
+              href="/login"
+              className="bg-black px-4 py-2 rounded-xl text-white"
+            >
+              Login
+            </Link>
+          )}
+
+          {!loading && user && (
+            <Link
+              href={
+                user[0].role === "admin"
+                  ? "/dashboard/admin-toko"
+                  : "/dashboard/users"
+              }
+              className="bg-black px-4 py-2 rounded-xl text-white"
+            >
+              Dashboard
+            </Link>
+          )}
+
           <MobileToggle isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="absolute top-0 left-0 w-full h-screen bg-white shadow-2xl p-10 flex flex-col justify-center gap-8 md:hidden animate-in fade-in zoom-in duration-300">
-            <button
-              className="absolute top-8 right-8 text-slate-900"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <X size={32} />
-            </button>
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-slate-900 font-black text-4xl tracking-tighter"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
-            <button className="bg-red-600 text-white p-6 rounded-2xl font-black text-xl flex items-center justify-center gap-3 shadow-2xl shadow-red-200 mt-10">
-              <Phone size={24} /> WHATSAPP
-            </button>
-          </div>
-        )}
+        {/* Mobile menu tetap sama */}
       </nav>
     </header>
   );

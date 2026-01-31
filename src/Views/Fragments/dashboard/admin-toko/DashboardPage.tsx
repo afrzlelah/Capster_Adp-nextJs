@@ -18,11 +18,19 @@ import {
   Icon,
 } from "lucide-react";
 import { UserDataSupabase } from "@/app/types/dataUserSupabase";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+import Gallery from "./components/Gallery";
+import FormAddGallery from "./components/FormAddGallery";
 
 const DashboardAdmin = () => {
+  const { push } = useRouter();
   const [activeTab, setActiveTab] = useState("booking");
   const [searchQuery, setSearchQuery] = useState("");
   const [userData, setUserData] = useState<UserDataSupabase | null>(null);
+  const [addGalleryForm, setAddGalleryForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [gallery, setGallery] = useState([]);
 
   useEffect(() => {
     const fetchingDataUser = async () => {
@@ -33,26 +41,72 @@ const DashboardAdmin = () => {
     fetchingDataUser();
   }, []);
 
+  const handleLogout = async () => {
+    await fetch(`http://localhost:3000/api/auth/logout`, { method: "POST" });
+    Swal.fire({
+      title: "Kami Tunggu!",
+      text: "Dadaaaaa",
+    });
+    push("/");
+  };
+
+  const handleAddGallery = () => {
+    setAddGalleryForm(true);
+  };
+  const fetchGallery = async () => {
+    const response = await fetch(`http://localhost:3000/api/gallery`);
+    const result = await response.json();
+    setGallery(result.data);
+  };
+  const handleSubmitAddGallery = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("name", e.target.name.value);
+      formData.append("description", e.target.description.value);
+      formData.append("image", e.target.image.files[0]);
+
+      const response = await fetch(`http://localhost:3000/api/gallery`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!result?.succes) {
+        await Swal.fire({
+          icon: "error",
+          title: "Upload Gagal!",
+          text: result.message,
+          confirmButtonText: "Paham",
+        });
+        return;
+      }
+
+      const ress = await Swal.fire({
+        icon: "success",
+        title: "Succes",
+        text: "Data berhasil ditambahkan",
+        theme: "auto",
+        confirmButtonText: "Okay",
+      });
+
+      if (ress.isConfirmed) {
+        await fetchGallery();
+      }
+    } finally {
+      setAddGalleryForm(false);
+      setIsLoading(false);
+    }
+  };
+
   // --- Mock Data ---
   const [layanan, setLayanan] = useState([
     { id: 1, nama: "Gentlemen's Cut", harga: 50000, durasi: "45 min" },
     { id: 2, nama: "Beard Trim & Shape", harga: 30000, durasi: "20 min" },
     { id: 3, nama: "Hair Tattoo/Art", harga: 75000, durasi: "60 min" },
-  ]);
-
-  const [gallery, setGallery] = useState([
-    {
-      id: 1,
-      judul: "Classic Pompadour",
-      kategori: "Hairstyle",
-      url: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400",
-    },
-    {
-      id: 2,
-      judul: "Fade Masterpiece",
-      kategori: "Hairstyle",
-      url: "https://images.unsplash.com/photo-1621605815841-2dddb3a736a9?w=400",
-    },
   ]);
 
   const [bookings, setBookings] = useState([
@@ -151,7 +205,10 @@ const DashboardAdmin = () => {
         </div>
 
         <div className="mt-auto p-6 border-t border-slate-200 dark:border-slate-800">
-          <button className="flex items-center gap-3 text-red-500 font-semibold hover:bg-red-50 dark:hover:bg-red-500/10 w-full px-4 py-3 rounded-xl transition-all">
+          <button
+            onClick={() => handleLogout()}
+            className="flex items-center gap-3 text-red-500 font-semibold hover:bg-red-50 dark:hover:bg-red-500/10 w-full px-4 py-3 rounded-xl transition-all"
+          >
             <LogOut size={20} /> Keluar
           </button>
         </div>
@@ -229,7 +286,12 @@ const DashboardAdmin = () => {
               </div>
 
               {(activeTab === "layanan" || activeTab === "gallery") && (
-                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-indigo-500/20 active:scale-95">
+                <button
+                  onClick={(e) =>
+                    activeTab === "gallery" ? handleAddGallery() : ""
+                  }
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
+                >
                   <Plus size={18} />{" "}
                   {activeTab === "layanan" ? "Tambah Layanan" : "Upload Foto"}
                 </button>
@@ -359,44 +421,20 @@ const DashboardAdmin = () => {
               )}
 
               {activeTab === "gallery" && (
-                <div className="p-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                  {gallery.map((item) => (
-                    <div
-                      key={item.id}
-                      className="group relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800"
-                    >
-                      <img
-                        src={item.url}
-                        alt={item.judul}
-                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="p-3">
-                        <p className="text-sm font-bold truncate">
-                          {item.judul}
-                        </p>
-                        <p className="text-[10px] uppercase font-black text-indigo-500">
-                          {item.kategori}
-                        </p>
-                      </div>
-                      <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-2 bg-white/90 dark:bg-slate-900/90 rounded-full text-red-500 shadow-xl backdrop-blur-md">
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                  {/* Placeholder Tambah Baru */}
-                  <button className="h-full min-h-48 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:text-indigo-500 hover:border-indigo-500 transition-all gap-2 bg-slate-50 dark:bg-slate-800/30">
-                    <Plus size={32} />
-                    <span className="text-xs font-bold uppercase tracking-widest">
-                      Upload Baru
-                    </span>
-                  </button>
-                </div>
+                <Gallery isLoading={isLoading} setIsLoading={setIsLoading} />
               )}
             </div>
           </div>
         </div>
+        {addGalleryForm && (
+          <FormAddGallery
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            addGalleryForm={addGalleryForm}
+            setAddGalleryForm={setAddGalleryForm}
+            handleSubmitAddGallery={handleSubmitAddGallery}
+          />
+        )}
       </main>
     </div>
   );
