@@ -8,7 +8,7 @@ const FormAddGallery = ({ setAddGalleryFormStatus, setGallery }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const { push } = useRouter();
 
-  const handleSubmitAddGallery = async (e) => {
+  const handleSubmitAddGallery = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
 

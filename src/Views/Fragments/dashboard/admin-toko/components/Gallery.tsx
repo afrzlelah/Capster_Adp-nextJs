@@ -1,15 +1,9 @@
 import { Plus, Trash2, X } from "lucide-react";
 import { use, useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import FormAddGallery from "./FormAddGallery";
 import { getGallery } from "@/services/gallery.services";
 
-const Gallery = ({
-  gallery,
-  setGallery,
-  addGalleryFormStatus,
-  setAddGalleryFormStatus,
-}: any) => {
+const Gallery = ({ gallery, setGallery, setAddGalleryFormStatus }: any) => {
   useEffect(() => {
     fetchGallery();
   }, []);
@@ -19,7 +13,11 @@ const Gallery = ({
     setGallery(result.data);
   };
 
-  const handleDeleteData = async (item) => {
+  const handleDeleteData = async (item: {
+    id: number;
+    name: string;
+    description: string;
+  }) => {
     const { id } = item;
     const warning = await Swal.fire({
       icon: "warning",

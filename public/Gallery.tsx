@@ -20,7 +20,7 @@ const Gallery = async () => {
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-10 space-y-10">
           {photos?.map(
             (photo: {
-              id: string;
+              id: number;
               name: string;
               image: string;
               description: string;
