@@ -2,7 +2,10 @@ import { supabaseServer } from "@/libs/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const response = await supabaseServer.from("gallery").select("*");
+  const response = await supabaseServer
+    .from("gallery")
+    .select("*")
+    .order("created_at", { ascending: false });
   const { data } = await response;
   return NextResponse.json({ data }, { status: 200 });
 }
@@ -28,7 +31,7 @@ export const POST = async (req: NextRequest) => {
   if (error)
     return NextResponse.json(
       { message: "Error Upload Image" },
-      { status: 500 },
+      { status: 500 }
     );
 
   // ambil public url dari image diatas
@@ -52,11 +55,11 @@ export const POST = async (req: NextRequest) => {
         succes: false,
         message: "Failed to add data to DB Table",
       },
-      { status: 500 },
+      { status: 500 }
     );
   return NextResponse.json(
     { status: 200, succes: true, message: "Upload Succes" },
-    { status: 200 },
+    { status: 200 }
   );
 };
 
@@ -70,10 +73,10 @@ export const DELETE = async (req: NextRequest) => {
   if (error)
     return NextResponse.json(
       { status: 500, succes: false, message: "Failed to delete data" },
-      { status: 500 },
+      { status: 500 }
     );
   return NextResponse.json(
     { message: "Succes to delete Data", succes: true },
-    { status: 200 },
+    { status: 200 }
   );
 };

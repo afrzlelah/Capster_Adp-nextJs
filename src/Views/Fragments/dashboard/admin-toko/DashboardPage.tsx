@@ -19,6 +19,9 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import Gallery from "./components/Gallery";
 import FormAddGallery from "./components/FormAddGallery";
+import Link from "next/link";
+import Service from "./components/Service";
+import { getService } from "@/services/service.service";
 
 const DashboardAdmin = () => {
   const { push } = useRouter();
@@ -45,16 +48,11 @@ const DashboardAdmin = () => {
     push("/");
   };
 
-  const handleAddGallery = () => {
+  const handleAddGallery = async () => {
     setAddGalleryFormStatus(true);
   };
 
   // --- Mock Data ---
-  const [layanan, setLayanan] = useState([
-    { id: 1, nama: "Gentlemen's Cut", harga: 50000, durasi: "45 min" },
-    { id: 2, nama: "Beard Trim & Shape", harga: 30000, durasi: "20 min" },
-    { id: 3, nama: "Hair Tattoo/Art", harga: 75000, durasi: "60 min" },
-  ]);
 
   const [bookings, setBookings] = useState([
     {
@@ -121,12 +119,14 @@ const DashboardAdmin = () => {
             <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
               <Scissors className="text-white w-6 h-6" />
             </div>
-            <span className="font-bold text-xl tracking-tight">
-              Capster{" "}
-              <span className="text-indigo-600 font-black italic text-[24px]">
-                ADP
+            <Link href={"/"}>
+              <span className="font-bold text-xl tracking-tight">
+                Capster{" "}
+                <span className="text-indigo-600 font-black italic text-[24px]">
+                  ADP
+                </span>
               </span>
-            </span>
+            </Link>
           </div>
 
           <nav className="space-y-1">
@@ -332,52 +332,7 @@ const DashboardAdmin = () => {
                 </table>
               )}
 
-              {activeTab === "layanan" && (
-                <table className="w-full text-left">
-                  <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-                    <tr>
-                      <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase">
-                        Nama Layanan
-                      </th>
-                      <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase">
-                        Estimasi Durasi
-                      </th>
-                      <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase">
-                        Harga
-                      </th>
-                      <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase text-right">
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                    {layanan.map((item) => (
-                      <tr
-                        key={item.id}
-                        className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
-                      >
-                        <td className="px-6 py-4 font-bold">{item.nama}</td>
-                        <td className="px-6 py-4 text-slate-500">
-                          {item.durasi}
-                        </td>
-                        <td className="px-6 py-4 font-black text-indigo-600 dark:text-indigo-400">
-                          Rp {item.harga.toLocaleString()}
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className="inline-flex items-center gap-2">
-                            <button className="p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg">
-                              <Edit size={18} />
-                            </button>
-                            <button className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg">
-                              <Trash2 size={18} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+              {activeTab === "layanan" && <Service />}
 
               {activeTab === "gallery" && (
                 <Gallery
