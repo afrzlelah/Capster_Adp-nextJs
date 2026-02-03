@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  LayoutDashboard,
   Scissors,
   Image as ImageIcon,
   Calendar,
@@ -11,11 +10,9 @@ import {
   Edit,
   CheckCircle,
   LogOut,
-  ChevronRight,
   TrendingUp,
   Users,
   Search,
-  Icon,
 } from "lucide-react";
 import { UserDataSupabase } from "@/app/types/dataUserSupabase";
 import Swal from "sweetalert2";
@@ -28,8 +25,7 @@ const DashboardAdmin = () => {
   const [activeTab, setActiveTab] = useState("booking");
   const [searchQuery, setSearchQuery] = useState("");
   const [userData, setUserData] = useState<UserDataSupabase | null>(null);
-  const [addGalleryForm, setAddGalleryForm] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [addGalleryFormStatus, setAddGalleryFormStatus] = useState(false);
   const [gallery, setGallery] = useState([]);
 
   useEffect(() => {
@@ -40,7 +36,6 @@ const DashboardAdmin = () => {
     };
     fetchingDataUser();
   }, []);
-
   const handleLogout = async () => {
     await fetch(`http://localhost:3000/api/auth/logout`, { method: "POST" });
     Swal.fire({
@@ -51,55 +46,7 @@ const DashboardAdmin = () => {
   };
 
   const handleAddGallery = () => {
-    setAddGalleryForm(true);
-  };
-  const fetchGallery = async () => {
-    const response = await fetch(`http://localhost:3000/api/gallery`);
-    const result = await response.json();
-    setGallery(result.data);
-  };
-  const handleSubmitAddGallery = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("name", e.target.name.value);
-      formData.append("description", e.target.description.value);
-      formData.append("image", e.target.image.files[0]);
-
-      const response = await fetch(`http://localhost:3000/api/gallery`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (!result?.succes) {
-        await Swal.fire({
-          icon: "error",
-          title: "Upload Gagal!",
-          text: result.message,
-          confirmButtonText: "Paham",
-        });
-        return;
-      }
-
-      const ress = await Swal.fire({
-        icon: "success",
-        title: "Succes",
-        text: "Data berhasil ditambahkan",
-        theme: "auto",
-        confirmButtonText: "Okay",
-      });
-
-      if (ress.isConfirmed) {
-        await fetchGallery();
-      }
-    } finally {
-      setAddGalleryForm(false);
-      setIsLoading(false);
-    }
+    setAddGalleryFormStatus(true);
   };
 
   // --- Mock Data ---
@@ -185,19 +132,31 @@ const DashboardAdmin = () => {
           <nav className="space-y-1">
             <button
               onClick={() => setActiveTab("booking")}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === "booking" ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                activeTab === "booking"
+                  ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400"
+                  : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              }`}
             >
               <Calendar size={20} /> Jadwal Booking
             </button>
             <button
               onClick={() => setActiveTab("layanan")}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === "layanan" ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                activeTab === "layanan"
+                  ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400"
+                  : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              }`}
             >
               <Scissors size={20} /> Kelola Layanan
             </button>
             <button
               onClick={() => setActiveTab("gallery")}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === "gallery" ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400" : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"}`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                activeTab === "gallery"
+                  ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400"
+                  : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              }`}
             >
               <ImageIcon size={20} /> Gallery Product
             </button>
@@ -222,8 +181,8 @@ const DashboardAdmin = () => {
             {activeTab === "booking"
               ? "Dashboard Admin"
               : activeTab === "layanan"
-                ? "Daftar Layanan"
-                : "Gallery Produk"}
+              ? "Daftar Layanan"
+              : "Gallery Produk"}
           </h1>
 
           <div className="flex items-center gap-4">
@@ -350,8 +309,8 @@ const DashboardAdmin = () => {
                               item.status === "Completed"
                                 ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
                                 : item.status === "Confirmed"
-                                  ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400"
-                                  : "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
+                                ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400"
+                                : "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
                             }`}
                           >
                             {item.status}
@@ -421,18 +380,22 @@ const DashboardAdmin = () => {
               )}
 
               {activeTab === "gallery" && (
-                <Gallery isLoading={isLoading} setIsLoading={setIsLoading} />
+                <Gallery
+                  gallery={gallery}
+                  setGallery={setGallery}
+                  addGalleryFormStatus={addGalleryFormStatus}
+                  setAddGalleryFormStatus={setAddGalleryFormStatus}
+                />
               )}
             </div>
           </div>
         </div>
-        {addGalleryForm && (
+        {addGalleryFormStatus && (
           <FormAddGallery
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-            addGalleryForm={addGalleryForm}
-            setAddGalleryForm={setAddGalleryForm}
-            handleSubmitAddGallery={handleSubmitAddGallery}
+            gallery={gallery}
+            setGallery={setGallery}
+            addGalleryFormStatus={addGalleryFormStatus}
+            setAddGalleryFormStatus={setAddGalleryFormStatus}
           />
         )}
       </main>
