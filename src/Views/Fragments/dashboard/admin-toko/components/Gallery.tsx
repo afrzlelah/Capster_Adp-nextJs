@@ -2,6 +2,7 @@ import { Plus, Trash2, X } from "lucide-react";
 import { use, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import FormAddGallery from "./FormAddGallery";
+import { getGallery } from "@/services/gallery.services";
 
 const Gallery = ({
   gallery,
@@ -47,7 +48,8 @@ const Gallery = ({
       theme: "auto",
       confirmButtonText: "Okay",
     });
-    setGallery(fetchGallery());
+    setGallery(await getGallery());
+    // setGallery(fetchGallery());
   };
   const handleAddGallery = () => setAddGalleryFormStatus(true);
   return (
