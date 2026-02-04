@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Scissors,
   Image as ImageIcon,
   Calendar,
   Plus,
   Trash2,
-  Edit,
   CheckCircle,
   LogOut,
   TrendingUp,
@@ -21,7 +20,6 @@ import Gallery from "./components/Gallery";
 import FormAddGallery from "./components/FormAddGallery";
 import Link from "next/link";
 import Service from "./components/Service";
-import { getService } from "@/services/service.service";
 
 const DashboardAdmin = () => {
   const { push } = useRouter();
