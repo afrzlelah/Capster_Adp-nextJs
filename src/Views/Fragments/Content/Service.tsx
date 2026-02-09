@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
 
 const Services = async () => {
-  const datas = await fetch(`http://localhost:3000/api/services`);
+  const datas = await fetch(`${process.env.NEXT_PUBLIC_URL_BASE}/api/services`);
   const list = await datas.json();
 
   return (

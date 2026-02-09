@@ -26,10 +26,13 @@ const FormAddGallery = ({
       formData.append("description", e.target.description.value);
       formData.append("image", e.target.image.files[0]);
 
-      const response = await fetch(`http://localhost:3000/api/${form}`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BASE}/api/${form}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const result = await response.json();
 
@@ -52,7 +55,8 @@ const FormAddGallery = ({
       });
 
       if (ress.isConfirmed) {
-        const set = form === "gallery" ? getGallery() : getServices();
+        const set =
+          form === "gallery" ? await getGallery() : await getServices();
         setData(await set);
         // setData(getGallery());
       }
@@ -63,18 +67,36 @@ const FormAddGallery = ({
   };
   const handleSubmitAddService = async (e: any) => {
     e.preventDefault();
+    setIsLoading(true);
     const name = e.target.name.value;
     const description = e.target.description.value;
     const price = e.target.price.value;
 
-    const response = await fetch(`http://localhost:3000/api/services`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, description, price: Number(price) }),
-    }).then((result) => result.json());
-    console.log(await response);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_BASE}/api/services`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, description, price: Number(price) }),
+      }
+    ).then((result) => result.json());
+    // if (await response.succes) console.log("ok");
+    setData(await getServices());
+    setIsLoading(false);
+    statusForm(false);
+    if (await response.success)
+      return Swal.fire({
+        title: "Succes add layanan",
+        icon: "success",
+        theme: "auto",
+      });
+    Swal.fire({
+      title: "Gagal menambahkan layanan",
+      icon: "error",
+      theme: "auto",
+    });
   };
   const Template =
     form === "gallery" ? (

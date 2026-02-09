@@ -26,7 +26,7 @@ const DashboardUser = () => {
   const [userData, setUserData] = useState<UserDataSupabase | null>(null);
   console.log(userData);
   useEffect(() => {
-    fetch(`http://localhost:3000/api/data`)
+    fetch(`${process.env.NEXT_PUBLIC_URL_BASE}/api/data`)
       .then((response) => response.json())
       .then((result) => setUserData(result[0]));
   }, []);
@@ -189,7 +189,11 @@ const DashboardUser = () => {
                 {recentHistory.map((item, idx) => (
                   <div
                     key={item.id}
-                    className={`p-4 flex items-center gap-4 ${idx !== recentHistory.length - 1 ? "border-b border-slate-100 dark:border-slate-800" : ""}`}
+                    className={`p-4 flex items-center gap-4 ${
+                      idx !== recentHistory.length - 1
+                        ? "border-b border-slate-100 dark:border-slate-800"
+                        : ""
+                    }`}
                   >
                     <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
                       <History size={18} />

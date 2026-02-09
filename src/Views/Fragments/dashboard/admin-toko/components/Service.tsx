@@ -3,10 +3,9 @@
 import { getServices } from "@/services/services.service";
 import { Edit, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-const Service = () => {
-  const [layanan, setLayanan] = useState([]);
-
+const Service = ({ layanan, setLayanan }) => {
   useEffect(() => {
     const p = async () => setLayanan(await getServices());
     p();
@@ -22,6 +21,43 @@ const Service = () => {
     waktu: string;
     price: number;
   }
+
+  const handleDeleteService = async (e, service) => {
+    e.preventDefault();
+    const { id } = service;
+    const alert = await Swal.fire({
+      title: "Yakin mau hapus?",
+      icon: "question",
+      theme: "auto",
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Yakin lah",
+      cancelButtonText: "gak jadi",
+    });
+
+    if (!alert.isConfirmed) return null;
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_BASE}/api/services?id=${id}`,
+      {
+        method: "DELETE",
+      }
+    ).then((r) => r.json());
+    if (!response.success)
+      return Swal.fire({
+        icon: "error",
+        text: "Gagal Menghapus",
+        theme: "auto",
+        confirmButtonText: "Okay",
+      });
+    setLayanan(await getServices());
+    Swal.fire({
+      icon: "success",
+      title: "Succesz",
+      text: "Data berhasil dihapus",
+      theme: "auto",
+      confirmButtonText: "Okay",
+    });
+  };
   return (
     <table className="w-full text-left">
       <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
@@ -56,7 +92,10 @@ const Service = () => {
                 <button className="p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg">
                   <Edit size={18} />
                 </button>
-                <button className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg">
+                <button
+                  onClick={(e) => handleDeleteService(e, service)}
+                  className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg"
+                >
                   <Trash2 size={18} />
                 </button>
               </div>

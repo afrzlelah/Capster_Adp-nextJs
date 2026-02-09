@@ -6,14 +6,11 @@ import Swal from "sweetalert2";
 
 const Gallery = ({ gallery, setGallery, setAddGalleryFormStatus }: any) => {
   useEffect(() => {
-    fetchGallery();
+    const g = async () => {
+      setGallery(await getGallery());
+    };
+    g();
   }, []);
-  const fetchGallery = async () => {
-    const response = await fetch(`http://localhost:3000/api/gallery`);
-    const result = await response.json();
-    setGallery(result.data);
-  };
-
   const handleDeleteData = async (item: {
     id: number;
     name: string;
@@ -26,12 +23,16 @@ const Gallery = ({ gallery, setGallery, setAddGalleryFormStatus }: any) => {
       showConfirmButton: true,
       confirmButtonText: "yakin",
       showCancelButton: true,
+      cancelButtonText: "Gajadi ah",
     });
     4;
     if (!(await warning).isConfirmed) return null;
-    const response = await fetch(`http://localhost:3000/api/gallery?id=${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_BASE}/api/gallery?id=${id}`,
+      {
+        method: "DELETE",
+      }
+    );
     console.log(response);
     if (!response.ok)
       return Swal.fire({
@@ -76,7 +77,7 @@ const Gallery = ({ gallery, setGallery, setAddGalleryFormStatus }: any) => {
                 {item.description}
               </p>
             </div>
-            <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute top-2 right-2 flex flex-col gap-2  opacity-100 transition-opacity">
               <button
                 onClick={() => handleDeleteData(item)}
                 className="p-2 bg-white/90 dark:bg-slate-900/90 rounded-full text-red-500 shadow-xl backdrop-blur-md"
@@ -88,7 +89,7 @@ const Gallery = ({ gallery, setGallery, setAddGalleryFormStatus }: any) => {
         ))}
         {/* Placeholder Tambah Baru */}
         <button
-          onClick={(e) => handleAddGallery()}
+          onClick={(e) => setAddGalleryFormStatus(true)}
           className="h-full min-h-48 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:text-indigo-500 hover:border-indigo-500 transition-all gap-2 bg-slate-50 dark:bg-slate-800/30"
         >
           <Plus size={32} />

@@ -2,10 +2,21 @@ import { supabaseServer } from "@/libs/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
+  const pageString: any = (await req.nextUrl.searchParams.get("page"))
+    ? await req.nextUrl.searchParams.get("page")
+    : 1;
+  const page = Number(pageString);
+  const limit = 3;
+
+  // rumus anjayy
+  const from: number = (await (page - 1)) * limit;
+  const to: number = from + limit - 1;
+
   const response = await supabaseServer
     .from("gallery")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(from, to);
   const { data } = await response;
   return NextResponse.json({ data }, { status: 200 });
 }

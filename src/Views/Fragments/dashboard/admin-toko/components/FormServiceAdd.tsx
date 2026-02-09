@@ -9,6 +9,7 @@ const FormServiceAdd = ({
   handleSubmitAddService: any;
   isLoading: boolean;
 }) => {
+  console.log(isLoading);
   return (
     <div className="absolute bg-black/10 backdrop-blur-xl w-full top-0 left-0  h-full">
       <div className="flex justify-end">

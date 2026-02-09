@@ -12,10 +12,11 @@ interface DataGallery {
 
 const Gallery = () => {
   const [photos, setPhotos] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
-      const potos = await fetch(`http://localhost:3000/api/gallery`);
+      const potos = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BASE}/api/gallery`
+      );
       const response = await potos.json();
       const result = response.data;
       setPhotos(result);
@@ -36,7 +37,7 @@ const Gallery = () => {
           <div className="w-32 h-2 bg-blue-600 mx-auto rounded-full shadow-[0_5px_15px_rgba(37,99,235,0.3)]"></div>
         </div>
 
-        <div className=" columns-1 sm:columns-3 md:columns-3 gap-10 space-y-10">
+        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 space-y-10">
           {photos.map((item: DataGallery, i) => (
             <div
               key={i}

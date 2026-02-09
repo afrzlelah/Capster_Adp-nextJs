@@ -1,6 +1,6 @@
 import Hero from "@/Views/Fragments/Content/Hero";
 import { Metadata } from "next";
-import Gallery from "../../../public/Gallery";
+import Gallery from "@/Views/Fragments/Content/Gallery";
 import Services from "@/Views/Fragments/Content/Service";
 import Footer from "@/Views/Fragments/Content/Footer";
 

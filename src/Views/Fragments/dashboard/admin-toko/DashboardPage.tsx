@@ -11,6 +11,7 @@ import {
   LogOut,
   TrendingUp,
   Users,
+  Menu,
   Search,
 } from "lucide-react";
 import { UserDataSupabase } from "@/app/types/dataUserSupabase";
@@ -30,17 +31,22 @@ const DashboardAdmin = () => {
   const [formAddLayanan, setFormAddLayanan] = useState(false);
   const [gallery, setGallery] = useState([]);
   const [layanan, setLayanan] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const fetchingDataUser = async () => {
-      const userData = await fetch(`http://localhost:3000/api/data`);
+      const userData = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BASE}/api/data`
+      );
       const data = await userData.json();
       setUserData(data[0]);
     };
     fetchingDataUser();
   }, []);
   const handleLogout = async () => {
-    await fetch(`http://localhost:3000/api/auth/logout`, { method: "POST" });
+    await fetch(`${process.env.NEXT_PUBLIC_URL_BASE}/api/auth/logout`, {
+      method: "POST",
+    });
     Swal.fire({
       title: "Kami Tunggu!",
       text: "Dadaaaaa",
@@ -116,7 +122,11 @@ const DashboardAdmin = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex font-sans text-slate-900 dark:text-slate-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-col hidden md:flex">
+      <aside
+        className={`w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800  ${
+          isMobile ? "" : "hidden"
+        } flex-col  md:flex`}
+      >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
@@ -134,7 +144,10 @@ const DashboardAdmin = () => {
 
           <nav className="space-y-1">
             <button
-              onClick={() => setActiveTab("booking")}
+              onClick={() => {
+                setIsMobile(false);
+                setActiveTab("booking");
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                 activeTab === "booking"
                   ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400"
@@ -144,7 +157,10 @@ const DashboardAdmin = () => {
               <Calendar size={20} /> Jadwal Booking
             </button>
             <button
-              onClick={() => setActiveTab("layanan")}
+              onClick={() => {
+                setIsMobile(false);
+                setActiveTab("layanan");
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                 activeTab === "layanan"
                   ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400"
@@ -154,7 +170,10 @@ const DashboardAdmin = () => {
               <Scissors size={20} /> Kelola Layanan
             </button>
             <button
-              onClick={() => setActiveTab("gallery")}
+              onClick={() => {
+                setIsMobile(false);
+                setActiveTab("gallery");
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
                 activeTab === "gallery"
                   ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400"
@@ -179,14 +198,17 @@ const DashboardAdmin = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Header */}
-        <header className="h-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0">
-          <h1 className="text-xl font-bold capitalize">
+        <header className="h-20 bg-white  dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0">
+          <button onClick={() => setIsMobile((prev) => !prev)}>
+            <Menu size={36} />
+          </button>
+          {/* <h1 className="text-md font-bold capitalize">
             {activeTab === "booking"
               ? "Dashboard Admin"
               : activeTab === "layanan"
               ? "Daftar Layanan"
               : "Gallery Produk"}
-          </h1>
+          </h1> */}
 
           <div className="flex items-center gap-4">
             <div className="relative">
@@ -209,7 +231,6 @@ const DashboardAdmin = () => {
 
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto p-8">
-          {/* Dashboard Summary (Hanya muncul di Tab Booking) */}
           {activeTab === "booking" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               <StatCard
@@ -337,7 +358,9 @@ const DashboardAdmin = () => {
                 </table>
               )}
 
-              {activeTab === "layanan" && <Service />}
+              {activeTab === "layanan" && (
+                <Service layanan={layanan} setLayanan={setLayanan} />
+              )}
 
               {activeTab === "gallery" && (
                 <Gallery

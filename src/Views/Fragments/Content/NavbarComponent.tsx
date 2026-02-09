@@ -9,7 +9,7 @@ import Link from "next/link";
 type User = {
   id: string;
   role: "admin" | "user";
-};
+}[];
 
 const NavbarComponent = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,10 +29,11 @@ const NavbarComponent = () => {
         name === "Layanan"
           ? "services"
           : name === "Galeri"
-            ? "gallery"
-            : "contact",
+          ? "gallery"
+          : "contact"
       )
       ?.scrollIntoView({ behavior: "smooth" });
+    setIsMenuOpen(false);
   };
 
   const navLinks = ["Layanan", "Galeri", "Lokasi"];
@@ -44,12 +45,11 @@ const NavbarComponent = () => {
           {/* Logo */}
           <div className="flex items-center gap-3 cursor-pointer">
             <Image src="/logo.png" alt="logo" width={48} height={48} />
-            <span className="font-black text-2xl">CAPSTER_ADP</span>
+            <span className="font-black text-md md:text-2xl">CAPSTER_ADP</span>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex gap-10 items-center">
-            {navLinks.map((name) => (
+            {navLinks.map((name: string) => (
               <p
                 key={name}
                 onClick={() => handleNav(name)}
@@ -68,8 +68,6 @@ const NavbarComponent = () => {
             </a>
           </div>
 
-          {/* AUTH BUTTON */}
-
           {!loading && !user && (
             <Link
               href="/login"
@@ -86,7 +84,7 @@ const NavbarComponent = () => {
                   ? "/dashboard/admin-toko"
                   : "/dashboard/users"
               }
-              className="bg-black px-4 py-2 rounded-xl text-white"
+              className="bg-black md:px-4 md:py-2 rounded-xl text-white p-2"
             >
               Dashboard
             </Link>
@@ -94,8 +92,29 @@ const NavbarComponent = () => {
 
           <MobileToggle isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         </div>
+        <div className="">
+          {isMenuOpen && (
+            <div className="flex flex-col gap-10 items-center ">
+              {navLinks.map((name) => (
+                <p
+                  key={name}
+                  onClick={() => handleNav(name)}
+                  className="cursor-pointer font-bold hover:text-red-600 "
+                >
+                  {name}
+                </p>
+              ))}
 
-        {/* Mobile menu tetap sama */}
+              <a
+                href="https://wa.me/6285702260407"
+                target="_blank"
+                className="font-bold"
+              >
+                Booking
+              </a>
+            </div>
+          )}
+        </div>
       </nav>
     </header>
   );
