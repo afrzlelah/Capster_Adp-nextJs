@@ -1,5 +1,6 @@
 "use client";
 
+import { getGallery } from "@/services/gallery.service";
 import { Instagram } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -11,22 +12,36 @@ interface DataGallery {
 }
 
 const Gallery = () => {
+  const [page, setPage] = useState(1);
   const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hasLoadMore, setHasLoadMore] = useState(true);
+
   useEffect(() => {
-    const fetchData = async () => {
-      const potos = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_BASE}/api/gallery`
-      );
-      const response = await potos.json();
-      const result = response.data;
-      setPhotos(result);
+    const f = async () => {
+      setPhotos(await getGallery());
     };
-    fetchData();
+    f();
   }, []);
+
+  const handleLoadMore = async () => {
+    setLoading(true);
+    const nextPage = page + 1;
+    setPage(nextPage);
+    const potos = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_BASE}/api/gallery?page=${nextPage}`
+    );
+
+    const response = await potos.json();
+    const result = response.data;
+    if (!result || result.length === 0) setHasLoadMore(false);
+    if (result.length < 3) setHasLoadMore(false);
+    setPhotos((prev) => [...prev, ...result]);
+  };
 
   return (
     <section id="gallery" className="py-40 bg-white">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 flex flex-col items-center">
         <div className="text-center mb-24 max-w-3xl mx-auto">
           <h2 className="text-red-600 font-black uppercase tracking-[0.4em] text-xs mb-6">
             Gallery Feed
@@ -69,6 +84,14 @@ const Gallery = () => {
             </div>
           ))}
         </div>
+        {hasLoadMore && (
+          <button
+            onClick={() => handleLoadMore()}
+            className="mt-32 p-5 max-w-2xl rounded-2xl bg-slate-900 font-bold text-white cursor-pointer "
+          >
+            {loading ? "Sedang Memuat..." : " Load Gambar lebih banyak"}
+          </button>
+        )}
       </div>
     </section>
   );
