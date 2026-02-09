@@ -17,7 +17,7 @@ import { UserDataSupabase } from "@/app/types/dataUserSupabase";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import Gallery from "./components/Gallery";
-import FormAddGallery from "./components/FormAddGallery";
+import FormAddGallery from "./components/TemplateForm";
 import Link from "next/link";
 import Service from "./components/Service";
 
@@ -27,7 +27,9 @@ const DashboardAdmin = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [userData, setUserData] = useState<UserDataSupabase | null>(null);
   const [addGalleryFormStatus, setAddGalleryFormStatus] = useState(false);
+  const [formAddLayanan, setFormAddLayanan] = useState(false);
   const [gallery, setGallery] = useState([]);
+  const [layanan, setLayanan] = useState([]);
 
   useEffect(() => {
     const fetchingDataUser = async () => {
@@ -48,6 +50,9 @@ const DashboardAdmin = () => {
 
   const handleAddGallery = async () => {
     setAddGalleryFormStatus(true);
+  };
+  const handleFormAddLayanan = () => {
+    setFormAddLayanan(true);
   };
 
   // --- Mock Data ---
@@ -245,7 +250,9 @@ const DashboardAdmin = () => {
               {(activeTab === "layanan" || activeTab === "gallery") && (
                 <button
                   onClick={(e) =>
-                    activeTab === "gallery" ? handleAddGallery() : ""
+                    activeTab === "gallery"
+                      ? handleAddGallery()
+                      : handleFormAddLayanan()
                   }
                   className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
                 >
@@ -345,10 +352,16 @@ const DashboardAdmin = () => {
         </div>
         {addGalleryFormStatus && (
           <FormAddGallery
-            gallery={gallery}
-            setGallery={setGallery}
-            addGalleryFormStatus={addGalleryFormStatus}
-            setAddGalleryFormStatus={setAddGalleryFormStatus}
+            form={"gallery"}
+            setData={setGallery}
+            statusForm={setAddGalleryFormStatus}
+          />
+        )}
+        {formAddLayanan && (
+          <FormAddGallery
+            form={"services"}
+            setData={setLayanan}
+            statusForm={setFormAddLayanan}
           />
         )}
       </main>

@@ -1,7 +1,8 @@
 import { Plus, Trash2, X } from "lucide-react";
-import { use, useEffect, useState } from "react";
+import { Suspense, use, useEffect, useState } from "react";
+import Image from "next/image";
+import { getGallery } from "@/services/gallery.service";
 import Swal from "sweetalert2";
-import { getGallery } from "@/services/gallery.services";
 
 const Gallery = ({ gallery, setGallery, setAddGalleryFormStatus }: any) => {
   useEffect(() => {
@@ -50,6 +51,10 @@ const Gallery = ({ gallery, setGallery, setAddGalleryFormStatus }: any) => {
     // setGallery(fetchGallery());
   };
   const handleAddGallery = () => setAddGalleryFormStatus(true);
+
+  if (gallery.length <= 0 || !gallery)
+    return <div className="p-10 text-center text-2xl">Memuat Galeri...</div>;
+
   return (
     <>
       <div className="p-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -58,7 +63,9 @@ const Gallery = ({ gallery, setGallery, setAddGalleryFormStatus }: any) => {
             key={item.id}
             className="group relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800"
           >
-            <img
+            <Image
+              height={360}
+              width={360}
               src={item.image}
               alt={item.name}
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"

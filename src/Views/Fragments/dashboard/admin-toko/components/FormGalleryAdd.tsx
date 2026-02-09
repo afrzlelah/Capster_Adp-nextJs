@@ -1,61 +1,18 @@
 import { X } from "lucide-react";
-import { useState } from "react";
-import Swal from "sweetalert2";
-import { getGallery } from "@/services/gallery.services";
-import { useRouter } from "next/navigation";
 
-const FormAddGallery = ({ setAddGalleryFormStatus, setGallery }: any) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { push } = useRouter();
-
-  const handleSubmitAddGallery = async (e: any) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("name", e.target.name.value);
-      formData.append("description", e.target.description.value);
-      formData.append("image", e.target.image.files[0]);
-
-      const response = await fetch(`http://localhost:3000/api/gallery`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (!result?.succes) {
-        await Swal.fire({
-          icon: "error",
-          title: "Upload Gagal!",
-          text: result.message,
-          confirmButtonText: "Paham",
-        });
-        return;
-      }
-
-      const ress = await Swal.fire({
-        icon: "success",
-        title: "Succes",
-        text: "Data berhasil ditambahkan",
-        theme: "auto",
-        confirmButtonText: "Okay",
-      });
-
-      if (ress.isConfirmed) {
-        setGallery(await getGallery());
-        // setGallery(getGallery());
-      }
-    } finally {
-      setAddGalleryFormStatus(false);
-      setIsLoading(false);
-    }
-  };
+const FormGalleryAdd = ({
+  statusForm,
+  handleSubmitAddGallery,
+  isLoading,
+}: {
+  statusForm: any;
+  handleSubmitAddGallery: any;
+  isLoading: boolean;
+}) => {
   return (
     <div className="absolute bg-black/10 backdrop-blur-xl w-full top-0 left-0  h-full">
       <div className="flex justify-end">
-        <button onClick={() => setAddGalleryFormStatus(false)} className=" p-5">
+        <button onClick={() => statusForm(false)} className=" p-5">
           <X size={30} />
         </button>
       </div>
@@ -129,4 +86,4 @@ const FormAddGallery = ({ setAddGalleryFormStatus, setGallery }: any) => {
   );
 };
 
-export default FormAddGallery;
+export default FormGalleryAdd;

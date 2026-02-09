@@ -1,6 +1,6 @@
 "use client";
 
-import { getServices } from "@/services/service.service";
+import { getServices } from "@/services/services.service";
 import { Edit, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -11,6 +11,9 @@ const Service = () => {
     const p = async () => setLayanan(await getServices());
     p();
   }, []);
+
+  if (layanan.length <= 0)
+    return <div className="p-5 text-center text-sm">Memuat Layanan...</div>;
 
   interface IServices {
     id: number;

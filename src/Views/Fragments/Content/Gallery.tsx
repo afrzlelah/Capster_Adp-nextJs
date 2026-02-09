@@ -36,7 +36,7 @@ const Gallery = () => {
           <div className="w-32 h-2 bg-blue-600 mx-auto rounded-full shadow-[0_5px_15px_rgba(37,99,235,0.3)]"></div>
         </div>
 
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-10 space-y-10">
+        <div className=" columns-1 sm:columns-3 md:columns-3 gap-10 space-y-10">
           {photos.map((item: DataGallery, i) => (
             <div
               key={i}
@@ -47,7 +47,7 @@ const Gallery = () => {
                 alt="HD Haircut Result"
                 className="w-full h-auto object-cover transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1 saturate-[1.1]"
               />
-              <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-10">
+              <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-transparent to-transparent opacity-100  transition-opacity duration-500 flex items-end p-10">
                 <div className="w-full flex justify-between items-center translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   <div className="text-white">
                     <p className="text-[10px] font-black tracking-widest uppercase opacity-70">

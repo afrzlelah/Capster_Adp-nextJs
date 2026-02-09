@@ -1,4 +1,4 @@
-import { getGallery } from "@/services/gallery.services";
+import { getGallery } from "@/services/gallery.service";
 import { Instagram } from "lucide-react";
 
 const Gallery = async () => {
@@ -17,7 +17,7 @@ const Gallery = async () => {
           <div className="w-32 h-2 bg-blue-600 mx-auto rounded-full shadow-[0_5px_15px_rgba(37,99,235,0.3)]"></div>
         </div>
 
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-10 space-y-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 space-y-10 ">
           {photos?.map(
             (photo: {
               id: number;

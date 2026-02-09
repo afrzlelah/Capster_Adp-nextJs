@@ -51,7 +51,7 @@ const Footer = async () => {
               LAYANAN
             </h4>
             <ul className="space-y-5 text-slate-500 font-bold">
-              {response.map((item: ResponseData) => (
+              {response?.map((item: ResponseData) => (
                 <li
                   key={item.id}
                   className="hover:text-blue-600 transition-colors cursor-pointer text-sm flex items-center gap-3 group"
