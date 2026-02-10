@@ -46,6 +46,7 @@ const Hero = () => {
         <div className="order-1 lg:order-2 relative mt-20 lg:mt-0">
           <div className="relative rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.25)] border-16 border-white z-20 transition-transform duration-700 hover:scale-[1.02]">
             <img
+              draggable
               src="/logo.png"
               alt="Capster ADP HD Work"
               className="w-full h-full object-cover saturate-[1.1] brightness-[1.02]"

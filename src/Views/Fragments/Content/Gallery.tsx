@@ -19,7 +19,10 @@ const Gallery = () => {
 
   useEffect(() => {
     const f = async () => {
-      setPhotos(await getGallery());
+      const p = await fetch(
+        `${process.env.NEXT_PUBLIC_URL_BASE}/api/gallery?page=${page}`
+      ).then((r) => r.json());
+      setPhotos(await p.data);
     };
     f();
   }, []);
@@ -37,6 +40,7 @@ const Gallery = () => {
     if (!result || result.length === 0) setHasLoadMore(false);
     if (result.length < 3) setHasLoadMore(false);
     setPhotos((prev) => [...prev, ...result]);
+    setLoading(false);
   };
 
   return (
@@ -53,7 +57,7 @@ const Gallery = () => {
         </div>
 
         <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 space-y-10">
-          {photos.map((item: DataGallery, i) => (
+          {photos?.map((item: DataGallery, i) => (
             <div
               key={i}
               className="relative rounded-[2.5rem] overflow-hidden group shadow-xl hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] transition-all duration-700 hover:-translate-y-2"

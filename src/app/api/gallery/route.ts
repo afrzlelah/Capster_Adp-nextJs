@@ -4,21 +4,33 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const pageString: any = (await req.nextUrl.searchParams.get("page"))
     ? await req.nextUrl.searchParams.get("page")
-    : 1;
-  const page = Number(pageString);
-  const limit = 3;
+    : null;
 
-  // rumus anjayy
-  const from: number = (await (page - 1)) * limit;
-  const to: number = from + limit - 1;
+  if (!pageString) {
+    const response = await supabaseServer
+      .from("gallery")
+      .select()
+      .order("created_at", { ascending: false });
+    console.log("okokokokok");
+    const { data } = await response;
+    return NextResponse.json({ data }, { status: 200 });
+  } else {
+    console.log("shvxhhs");
+    const page = Number(pageString);
+    const limit = 3;
 
-  const response = await supabaseServer
-    .from("gallery")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .range(from, to);
-  const { data } = await response;
-  return NextResponse.json({ data }, { status: 200 });
+    // rumus anjayy
+    const from: number = (await (page - 1)) * limit;
+    const to: number = from + limit - 1;
+
+    const response = await supabaseServer
+      .from("gallery")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .range(from, to);
+    const { data } = await response;
+    return NextResponse.json({ data }, { status: 200 });
+  }
 }
 
 export const POST = async (req: NextRequest) => {

@@ -217,6 +217,7 @@ const DashboardAdmin = () => {
                 size={18}
               />
               <input
+                spellCheck
                 type="text"
                 placeholder="Cari sesuatu..."
                 className="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-sm focus:ring-2 focus:ring-indigo-500 outline-none w-64 transition-all"
