@@ -1,5 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import Alert from "./Alert";
 
 const MobileToggle = ({
   isMenuOpen,

@@ -2,7 +2,7 @@
 
 import { getGallery } from "@/services/gallery.service";
 import { Instagram } from "lucide-react";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 
 interface DataGallery {
   id: string;
@@ -10,17 +10,19 @@ interface DataGallery {
   image: string;
   description: string;
 }
+// bayangakan mie ayam pedas dengan secangkir es teh manis sebelum berbuka puasa
+// Makan ramen dengan kuah pedas disertaii dimsum yang penuh dengan daging
 
 const Gallery = () => {
   const [page, setPage] = useState(1);
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState<DataGallery[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasLoadMore, setHasLoadMore] = useState(true);
 
   useEffect(() => {
     const f = async () => {
       const p = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_BASE}/api/gallery?page=${page}`
+        `${process.env.NEXT_PUBLIC_URL_BASE}/api/gallery?page=${page}`,
       ).then((r) => r.json());
       setPhotos(await p.data);
     };
@@ -32,7 +34,7 @@ const Gallery = () => {
     const nextPage = page + 1;
     setPage(nextPage);
     const potos = await fetch(
-      `${process.env.NEXT_PUBLIC_URL_BASE}/api/gallery?page=${nextPage}`
+      `${process.env.NEXT_PUBLIC_URL_BASE}/api/gallery?page=${nextPage}`,
     );
 
     const response = await potos.json();
@@ -42,7 +44,6 @@ const Gallery = () => {
     setPhotos((prev) => [...prev, ...result]);
     setLoading(false);
   };
-
   return (
     <section id="gallery" className="py-40 bg-white">
       <div className="container mx-auto px-6 flex flex-col items-center">
